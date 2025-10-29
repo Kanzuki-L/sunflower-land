@@ -171,7 +171,18 @@ export type EventDecorationName =
   | "Blue Slime Balloon"
   | "Gold Cooking Trophy"
   | "Silver Cooking Trophy"
-  | "Bronze Cooking Trophy";
+  | "Bronze Cooking Trophy"
+  | "Bronze Friends Trophy"
+  | "Silver Friends Trophy"
+  | "Gold Friends Trophy"
+  | "Cerberus"
+  | "Witch's Cauldron"
+  | "Raveyard"
+  | "Haunted House"
+  | "Mimic Egg"
+  | "Haunted Tomb"
+  | "Guillotine"
+  | "Vampire Coffin";
 
 export type TileName =
   | "Black Tile"
@@ -213,6 +224,27 @@ export const DECORATION_TEMPLATES = {
     isWithdrawable: () => false,
   },
   "Bronze Cooking Trophy": {
+    dimensions: {
+      width: 1,
+      height: 1,
+    },
+    isWithdrawable: () => false,
+  },
+  "Bronze Friends Trophy": {
+    dimensions: {
+      width: 1,
+      height: 1,
+    },
+    isWithdrawable: () => false,
+  },
+  "Silver Friends Trophy": {
+    dimensions: {
+      width: 1,
+      height: 1,
+    },
+    isWithdrawable: () => false,
+  },
+  "Gold Friends Trophy": {
     dimensions: {
       width: 1,
       height: 1,
@@ -1271,6 +1303,38 @@ export const DECORATION_DIMENSIONS: Record<DecorationName, Dimensions> = {
   "Giant Orange": { width: 2, height: 1 },
   "Giant Apple": { width: 2, height: 1 },
   "Giant Banana": { width: 2, height: 1 },
+  Cerberus: {
+    width: 2,
+    height: 2,
+  },
+  "Witch's Cauldron": {
+    width: 2,
+    height: 2,
+  },
+  Raveyard: {
+    width: 1,
+    height: 2,
+  },
+  "Haunted House": {
+    width: 6,
+    height: 5,
+  },
+  "Mimic Egg": {
+    width: 1,
+    height: 2,
+  },
+  "Haunted Tomb": {
+    width: 1,
+    height: 2,
+  },
+  Guillotine: {
+    width: 2,
+    height: 2,
+  },
+  "Vampire Coffin": {
+    width: 2,
+    height: 2,
+  },
 };
 
 export type Decoration = {

@@ -731,6 +731,10 @@ import goldCookingTrophy from "assets/sfts/cooking_gold_trophy.webp";
 import silverCookingTrophy from "assets/sfts/cooking_silver_trophy.webp";
 import bronzeCookingTrophy from "assets/sfts/cooking_bronze_trophy.webp";
 
+import bronzeFriendsTrophy from "assets/sfts/friends_third_place_trophy.webp";
+import silverFriendsTrophy from "assets/sfts/friends_second_place_trophy.webp";
+import goldFriendsTrophy from "assets/sfts/friends_first_place_trophy.webp";
+
 import desertRose from "assets/sfts/desert_rose.webp";
 import sarcophagus from "assets/sfts/sarcophagus.webp";
 import anubisJackal from "assets/sfts/anubis_jackal.webp";
@@ -883,6 +887,17 @@ import ponyToy from "assets/sfts/pony_toy.webp";
 import redSlimeBalloon from "assets/sfts/red_slime_balloon.webp";
 import blueSlimeBalloon from "assets/sfts/blue_slime_balloon.webp";
 
+import halloweenToken2025 from "assets/icons/halloween_token_2025.webp";
+import halloweenTicket2025 from "assets/icons/halloween_ticket_2025.webp";
+import cerberus from "assets/sfts/cerberus.webp";
+import witchsCauldron from "assets/sfts/witchs_cauldron.webp";
+import raveyard from "assets/sfts/raveyard.webp";
+import hauntedHouse from "assets/sfts/haunted_house.webp";
+import mimicEgg from "assets/sfts/mimic_egg.webp";
+import hauntedTomb from "assets/sfts/haunted_tomb.webp";
+import guillotine from "assets/sfts/guillotine.webp";
+import vampireCoffin from "assets/sfts/vampire_coffin.webp";
+
 import quarry from "assets/sfts/quarry.webp";
 import obsidianTurtle from "assets/sfts/obsidian_turtle.webp";
 import winterGuardian from "assets/sfts/winter_guardian.webp";
@@ -993,6 +1008,10 @@ import babySheep from "assets/sfts/baby_sheep.webp";
 import janitorChicken from "assets/animals/chickens/janitor_chicken.webp";
 import venusBumpkinTrap from "assets/flowers/venus_bumpkin_trap.webp";
 import poseidon from "assets/sfts/poseidon_fish.webp";
+import blackHoleFlower from "assets/sfts/black_hole_flower.webp";
+import sleepyChicken from "assets/sfts/sleepy_chicken.webp";
+import astronautCow from "assets/sfts/cow_astronaut.webp";
+import astronautSheep from "assets/sfts/sheep_astronaut.webp";
 
 import barkley from "assets/sfts/pets/dogs/barkley.webp";
 import biscuit from "assets/sfts/pets/dogs/biscuit.webp";
@@ -4902,6 +4921,10 @@ export const ITEM_DETAILS: Items = {
     image: chicory,
     description: translate("description.chicory"),
   },
+  "Black Hole Flower": {
+    image: blackHoleFlower,
+    description: translate("description.blackHoleFlower"),
+  },
   Wagon: {
     image: Wagon,
     description: "A perfect wagon for your bears to rest and relax.",
@@ -4914,6 +4937,10 @@ export const ITEM_DETAILS: Items = {
     image: alienChicken,
     description: translate("description.alien.chicken"),
   },
+  "Sleepy Chicken": {
+    image: sleepyChicken,
+    description: translate("description.sleepyChicken"),
+  },
   "Toxic Tuft": {
     image: toxicTuft,
     description: translate("description.toxic.tuft"),
@@ -4921,6 +4948,10 @@ export const ITEM_DETAILS: Items = {
   Mootant: {
     image: mootant,
     description: translate("description.mootant"),
+  },
+  "Astronaut Cow": {
+    image: astronautCow,
+    description: translate("description.astronautCow"),
   },
   "Crop Circle": {
     image: cropCircle,
@@ -5121,6 +5152,10 @@ export const ITEM_DETAILS: Items = {
   "Frozen Sheep": {
     image: frozenSheep,
     description: translate("description.frozen.sheep"),
+  },
+  "Astronaut Sheep": {
+    image: astronautSheep,
+    description: translate("description.astronautSheep"),
   },
   "Summer Chicken": {
     image: summerChicken,
@@ -5626,7 +5661,18 @@ export const ITEM_DETAILS: Items = {
     image: bronzeCookingTrophy,
     description: translate("description.bronzeCookingTrophy"),
   },
-
+  "Bronze Friends Trophy": {
+    image: bronzeFriendsTrophy,
+    description: translate("description.bronzeFriendsTrophy"),
+  },
+  "Silver Friends Trophy": {
+    image: silverFriendsTrophy,
+    description: translate("description.silverFriendsTrophy"),
+  },
+  "Gold Friends Trophy": {
+    image: goldFriendsTrophy,
+    description: translate("description.goldFriendsTrophy"),
+  },
   Doll: {
     image: doll,
     description: translate("description.doll"),
@@ -6023,5 +6069,45 @@ export const ITEM_DETAILS: Items = {
   "Moon Crystal": {
     image: moonCrystal,
     description: translate("description.moonCrystal"),
+  },
+  Cerberus: {
+    image: cerberus,
+    description: translate("description.cerberus"),
+  },
+  "Witch's Cauldron": {
+    image: witchsCauldron,
+    description: translate("description.witchsCauldron"),
+  },
+  Raveyard: {
+    image: raveyard,
+    description: translate("description.raveyard"),
+  },
+  "Haunted House": {
+    image: hauntedHouse,
+    description: translate("description.hauntedHouse"),
+  },
+  "Mimic Egg": {
+    image: mimicEgg,
+    description: translate("description.mimicEgg"),
+  },
+  "Haunted Tomb": {
+    image: hauntedTomb,
+    description: translate("description.hauntedTomb"),
+  },
+  Guillotine: {
+    image: guillotine,
+    description: translate("description.guillotine"),
+  },
+  "Vampire Coffin": {
+    image: vampireCoffin,
+    description: translate("description.vampireCoffin"),
+  },
+  "Halloween Token 2025": {
+    image: halloweenToken2025,
+    description: translate("description.halloweenToken2025"),
+  },
+  "Halloween Ticket 2025": {
+    image: halloweenTicket2025,
+    description: translate("description.halloweenTicket2025"),
   },
 };

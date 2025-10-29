@@ -213,15 +213,22 @@ export type MutantChicken =
   | "Alien Chicken"
   | "Summer Chicken"
   | "Love Chicken"
-  | "Janitor Chicken";
+  | "Janitor Chicken"
+  | "Sleepy Chicken";
 
-export type MutantCow = "Mootant" | "Frozen Cow" | "Dr Cow" | "Baby Cow";
+export type MutantCow =
+  | "Mootant"
+  | "Frozen Cow"
+  | "Dr Cow"
+  | "Baby Cow"
+  | "Astronaut Cow";
 
 export type MutantSheep =
   | "Toxic Tuft"
   | "Frozen Sheep"
   | "Nurse Sheep"
-  | "Baby Sheep";
+  | "Baby Sheep"
+  | "Astronaut Sheep";
 
 export type MutantAnimal = MutantChicken | MutantCow | MutantSheep;
 
@@ -254,6 +261,8 @@ export type Coupons =
   | "Easter Ticket 2025"
   | "Colors Token 2025"
   | "Colors Ticket 2025"
+  | "Halloween Token 2025"
+  | "Halloween Ticket 2025"
   | "Cheer"
   | Keys
   | SeasonalTicket
@@ -394,6 +403,12 @@ export const COUPONS: Record<Coupons, { description: string }> = {
   Bracelet: { description: "" },
   Cheer: { description: translate("description.cheer") },
   "Pet Cookie": { description: translate("description.petCookie") },
+  "Halloween Token 2025": {
+    description: translate("description.halloweenToken2025"),
+  },
+  "Halloween Ticket 2025": {
+    description: translate("description.halloweenTicket2025"),
+  },
 };
 
 export type Purchase = {
@@ -1262,7 +1277,8 @@ export type Currency =
   | "Mark"
   | "Love Charm"
   | "Easter Token 2025"
-  | "Colors Token 2025";
+  | "Colors Token 2025"
+  | "Halloween Token 2025";
 
 export type ShopItemBase = {
   shortDescription: string;

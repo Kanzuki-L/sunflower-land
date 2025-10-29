@@ -106,6 +106,7 @@ describe("feedPet", () => {
                 name: "Barkley",
                 requests: {
                   food: [],
+                  fedAt: now,
                 },
                 energy: 100,
                 experience: 0,
@@ -143,6 +144,7 @@ describe("feedPet", () => {
                 name: "Barkley",
                 requests: {
                   food: ["Pumpkin Soup", "Roast Veggies", "Antipasto"],
+                  fedAt: now,
                 },
                 energy: 100,
                 experience: 0,
@@ -334,6 +336,7 @@ describe("feedPet", () => {
                 requests: {
                   food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                   foodFed: [],
+                  fedAt: now,
                 },
                 energy: 100,
                 experience: 0,
@@ -375,8 +378,13 @@ describe("feedPet", () => {
               1: {
                 name: "Pet #1",
                 id: 1,
-                revealAt: 0,
-                traits: { type: "Dragon" },
+                traits: {
+                  type: "Dragon",
+                  fur: "DragonColor1",
+                  accessory: "DragonAccessory1",
+                  bib: "Basic Bib",
+                  aura: "No Aura",
+                },
                 energy: 100,
                 experience: 0,
                 pettedAt: now,
@@ -389,8 +397,13 @@ describe("feedPet", () => {
               2: {
                 name: "Pet #2",
                 id: 2,
-                revealAt: 0,
-                traits: { type: "Dragon" },
+                traits: {
+                  type: "Dragon",
+                  fur: "DragonColor1",
+                  accessory: "DragonAccessory1",
+                  bib: "Basic Bib",
+                  aura: "No Aura",
+                },
                 energy: 100,
                 experience: 0,
                 pettedAt: now,
@@ -419,6 +432,7 @@ describe("feedPet", () => {
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                 foodFed: [],
+                fedAt: now,
               },
               energy: 0,
               experience: 100,
@@ -470,8 +484,13 @@ describe("feedPet", () => {
             1: {
               name: "Pet #1",
               id: 1,
-              revealAt: 0,
-              traits: { type: "Dragon" },
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "No Aura",
+              },
               energy: 100,
               experience: 0,
               pettedAt: now,
@@ -484,13 +503,19 @@ describe("feedPet", () => {
             2: {
               name: "Pet #2",
               id: 2,
-              revealAt: 0,
-              traits: { type: "Dragon" },
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "No Aura",
+              },
               energy: 100,
               experience: 0,
               pettedAt: now,
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+                fedAt: 0,
               },
               coordinates: { x: 1, y: 1 },
             },
@@ -510,6 +535,122 @@ describe("feedPet", () => {
     expect(petData?.experience).toEqual(100);
   });
 
+  it("gives an energy multiplier for nft pets with aura", () => {
+    const state = feedPet({
+      state: {
+        ...INITIAL_FARM,
+        inventory: {
+          "Bumpkin Salad": new Decimal(10),
+        },
+        pets: {
+          nfts: {
+            1: {
+              name: "Pet #1",
+              id: 1,
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "Basic Aura",
+              },
+              energy: 100,
+              experience: 0,
+              pettedAt: now,
+              requests: {
+                food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+                fedAt: now,
+              },
+              coordinates: { x: 1, y: 1 },
+            },
+            2: {
+              name: "Pet #2",
+              id: 2,
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "No Aura",
+              },
+              energy: 100,
+              experience: 0,
+              pettedAt: now,
+              requests: {
+                fedAt: 0,
+                food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+              },
+              coordinates: { x: 1, y: 1 },
+            },
+          },
+        },
+      },
+      action: { type: "pet.fed", petId: 1, food: "Bumpkin Salad" },
+      createdAt: now,
+    });
+    const petData = state.pets?.nfts?.[1];
+
+    expect(petData?.energy).toEqual(250);
+  });
+
+  it("gives an experience bonus for nft pets with bib", () => {
+    const state = feedPet({
+      state: {
+        ...INITIAL_FARM,
+        inventory: {
+          "Bumpkin Salad": new Decimal(10),
+        },
+        pets: {
+          nfts: {
+            1: {
+              name: "Pet #1",
+              id: 1,
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Mid Bib",
+                aura: "No Aura",
+              },
+              energy: 100,
+              experience: 0,
+              pettedAt: now,
+              requests: {
+                food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+                fedAt: now,
+              },
+              coordinates: { x: 1, y: 1 },
+            },
+            2: {
+              name: "Pet #2",
+              id: 2,
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "No Aura",
+              },
+              energy: 100,
+              experience: 0,
+              pettedAt: now,
+              requests: {
+                fedAt: 0,
+                food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+              },
+              coordinates: { x: 1, y: 1 },
+            },
+          },
+        },
+      },
+      action: { type: "pet.fed", petId: 1, food: "Bumpkin Salad" },
+      createdAt: now,
+    });
+    const petData = state.pets?.nfts?.[1];
+
+    expect(petData?.experience).toEqual(105);
+  });
+
   it("feeds pet with energy boost", () => {
     const state = feedPet({
       state: {
@@ -521,6 +662,7 @@ describe("feedPet", () => {
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                 foodFed: [],
+                fedAt: now,
               },
               energy: 0,
               experience: 1500, // Level 5
@@ -566,6 +708,7 @@ describe("feedPet", () => {
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                 foodFed: [],
+                fedAt: now,
               },
               energy: 0,
               experience: 1500, // Level 5
@@ -613,6 +756,7 @@ describe("feedPet", () => {
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                 foodFed: [],
+                fedAt: now,
               },
               energy: 0,
               experience: level27XP, // Level 27
@@ -661,15 +805,21 @@ describe("feedPet", () => {
             1: {
               name: "Pet #1",
               id: 1,
-              revealAt: 0,
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                 foodFed: [],
+                fedAt: now,
               },
               energy: 0,
               experience: level40XP, // Level 40
               pettedAt: now,
-              traits: { type: "Dragon" },
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "No Aura",
+              },
               coordinates: { x: 1, y: 1 },
             },
           },
@@ -705,15 +855,21 @@ describe("feedPet", () => {
             1: {
               name: "Pet #1",
               id: 1,
-              revealAt: 0,
               requests: {
                 food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
                 foodFed: [],
+                fedAt: now,
               },
               energy: 0,
               experience: level85XP, // Level 85
               pettedAt: now,
-              traits: { type: "Dragon" },
+              traits: {
+                type: "Dragon",
+                fur: "DragonColor1",
+                accessory: "DragonAccessory1",
+                bib: "Basic Bib",
+                aura: "No Aura",
+              },
               coordinates: { x: 1, y: 1 },
             },
           },
@@ -745,6 +901,7 @@ describe("feedPet", () => {
         name: "Barkley",
         requests: {
           food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+          fedAt: now,
         },
         energy: 100,
         experience: 0,
@@ -766,6 +923,7 @@ describe("feedPet", () => {
         name: "Barkley",
         requests: {
           food: ["Pumpkin Soup", "Bumpkin Salad", "Antipasto"],
+          fedAt: now,
         },
         energy: 100,
         experience: 5500, // Level 10

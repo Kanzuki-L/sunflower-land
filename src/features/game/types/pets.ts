@@ -6,6 +6,8 @@ import { getObjectEntries } from "../expansion/lib/utils";
 import { InventoryItemName } from "./game";
 import { Coordinates } from "../expansion/components/MapPlacement";
 import { COMPETITION_POINTS } from "./competitions";
+import { PetTraits } from "features/pets/data/types";
+
 export type PetName =
   // Dogs
   | "Barkley"
@@ -91,12 +93,13 @@ export type Pet = {
   requests: {
     food: CookableName[];
     foodFed?: CookableName[];
-    fedAt?: number;
+    fedAt: number;
     resets?: {
       [date: string]: number;
     };
   };
-  fetches?: Partial<Record<PetResourceName, number>>; // Fetch yields
+  // fetches?: Partial<Record<PetResourceName, number>>; // Will be unused in the future
+  fetchSeeds?: Partial<Record<PetResourceName, number>>; // Store the next seed
   energy: number;
   experience: number;
   pettedAt: number;
@@ -113,13 +116,7 @@ export type PetNFT = Omit<Pet, "name"> & {
   name: PetNFTName;
   coordinates?: Coordinates;
   location?: PlaceableLocation;
-  revealAt: number;
-  // TODO: Add traits
-  traits?: {
-    bib?: string;
-    aura?: string;
-    type: PetNFTType;
-  };
+  traits?: PetTraits;
 };
 
 export type PetNFTs = Record<number, PetNFT>;
@@ -138,76 +135,76 @@ export const isPet = (name: InventoryItemName): name is PetName =>
   name in PET_TYPES;
 
 export type PetCategory = {
-  primaryCategory: PetCategoryName;
-  secondaryCategory?: PetCategoryName;
-  tertiaryCategory?: PetCategoryName;
+  primary: PetCategoryName;
+  secondary?: PetCategoryName;
+  tertiary?: PetCategoryName;
 };
 
 export const PET_CATEGORIES: Record<PetType, PetCategory> = {
   Dog: {
-    primaryCategory: "Guardian",
-    secondaryCategory: "Hunter",
+    primary: "Guardian",
+    secondary: "Hunter",
   },
   Cat: {
-    primaryCategory: "Hunter",
-    secondaryCategory: "Moonkin",
+    primary: "Hunter",
+    secondary: "Moonkin",
   },
   Owl: {
-    primaryCategory: "Moonkin",
-    secondaryCategory: "Forager",
+    primary: "Moonkin",
+    secondary: "Forager",
   },
   Horse: {
-    primaryCategory: "Voyager",
-    secondaryCategory: "Beast",
+    primary: "Voyager",
+    secondary: "Beast",
   },
   Bull: {
-    primaryCategory: "Beast",
-    secondaryCategory: "Snowkin",
+    primary: "Beast",
+    secondary: "Snowkin",
   },
   Hamster: {
-    primaryCategory: "Forager",
-    secondaryCategory: "Guardian",
+    primary: "Forager",
+    secondary: "Guardian",
   },
   Penguin: {
-    primaryCategory: "Snowkin",
-    secondaryCategory: "Voyager",
+    primary: "Snowkin",
+    secondary: "Voyager",
   },
 
   // NFT Pet Types
   Ram: {
-    primaryCategory: "Snowkin",
-    secondaryCategory: "Guardian",
-    tertiaryCategory: "Forager",
+    primary: "Snowkin",
+    secondary: "Guardian",
+    tertiary: "Forager",
   },
   Dragon: {
-    primaryCategory: "Hunter",
-    secondaryCategory: "Moonkin",
-    tertiaryCategory: "Voyager",
+    primary: "Hunter",
+    secondary: "Moonkin",
+    tertiary: "Voyager",
   },
   Phoenix: {
-    primaryCategory: "Moonkin",
-    secondaryCategory: "Voyager",
-    tertiaryCategory: "Hunter",
+    primary: "Moonkin",
+    secondary: "Voyager",
+    tertiary: "Hunter",
   },
   Griffin: {
-    primaryCategory: "Voyager",
-    secondaryCategory: "Hunter",
-    tertiaryCategory: "Beast",
+    primary: "Voyager",
+    secondary: "Hunter",
+    tertiary: "Beast",
   },
   Warthog: {
-    primaryCategory: "Beast",
-    secondaryCategory: "Forager",
-    tertiaryCategory: "Guardian",
+    primary: "Beast",
+    secondary: "Forager",
+    tertiary: "Guardian",
   },
   Wolf: {
-    primaryCategory: "Guardian",
-    secondaryCategory: "Snowkin",
-    tertiaryCategory: "Moonkin",
+    primary: "Guardian",
+    secondary: "Snowkin",
+    tertiary: "Moonkin",
   },
   Bear: {
-    primaryCategory: "Forager",
-    secondaryCategory: "Beast",
-    tertiaryCategory: "Snowkin",
+    primary: "Forager",
+    secondary: "Beast",
+    tertiary: "Snowkin",
   },
 };
 
@@ -227,24 +224,24 @@ export const PET_FETCHES: Record<PetType, PetConfig> = getObjectEntries(
   (acc, [petType, petCategory]) => {
     const fetches: PetConfig["fetches"] = [
       { name: "Acorn", level: 1 },
-      { name: FETCHES_BY_CATEGORY[petCategory.primaryCategory], level: 3 },
+      { name: FETCHES_BY_CATEGORY[petCategory.primary], level: 3 },
       { name: "Fossil Shell", level: 20 },
     ];
 
-    if (petCategory.secondaryCategory) {
+    if (petCategory.secondary) {
       fetches.push({
-        name: FETCHES_BY_CATEGORY[petCategory.secondaryCategory],
+        name: FETCHES_BY_CATEGORY[petCategory.secondary],
         level: 7,
       });
     }
 
     // Only NFT Pets have tertiary categories
-    if (petCategory.tertiaryCategory) {
+    if (petCategory.tertiary) {
       fetches.push(
         ...([
           { name: "Moonfur", level: 12 },
           {
-            name: FETCHES_BY_CATEGORY[petCategory.tertiaryCategory],
+            name: FETCHES_BY_CATEGORY[petCategory.tertiary],
             level: 25,
           },
         ] as const),
@@ -670,7 +667,7 @@ export function isPetNeglected(
 
   const PET_NEGLECT_DAYS = isPetNFT(pet) ? 7 : 3;
 
-  const lastFedAt = pet.requests.fedAt ?? createdAt; // Default to createdAt otherwise the pet will be neglected if it hasn't been fed before
+  const lastFedAt = pet.requests.fedAt;
   const lastFedAtDate = new Date(lastFedAt).toISOString().split("T")[0];
   const todayDate = new Date(createdAt).toISOString().split("T")[0];
   const daysSinceLastFedMs =
@@ -709,11 +706,50 @@ export function isPetOfTypeFed({
   const isPetOfTypeFed = petsOfType.some((pet) => {
     if (pet.id === id) return false;
     const lastFedAt = pet.requests.fedAt;
-    if (!lastFedAt) return false;
     const todayDate = new Date(now).toISOString().split("T")[0];
     const lastFedAtDate = new Date(lastFedAt).toISOString().split("T")[0];
     return lastFedAtDate === todayDate;
   });
 
   return isPetOfTypeFed;
+}
+
+type PetNFTRevealConfig = {
+  revealAt: Date;
+  startId: number;
+  endId: number;
+};
+
+const PET_NFT_REVEAL_CONFIG: PetNFTRevealConfig[] = [
+  {
+    revealAt: new Date("2025-11-11T00:00:00.000Z"),
+    startId: 1,
+    endId: 1000,
+  },
+  {
+    revealAt: new Date("2025-11-11T00:00:00.000Z"),
+    startId: 2501,
+    endId: 3000,
+  },
+];
+
+export function isPetNFTRevealed(petId: number, createdAt: number) {
+  return PET_NFT_REVEAL_CONFIG.some(
+    (config) =>
+      petId >= config.startId &&
+      petId <= config.endId &&
+      createdAt >= config.revealAt.getTime(),
+  );
+}
+
+export function getPetNFTReleaseDate(petId: number, createdAt: number) {
+  const revealAt = PET_NFT_REVEAL_CONFIG.find(
+    (config) => petId >= config.startId && petId <= config.endId,
+  )?.revealAt;
+
+  if (!revealAt || revealAt.getTime() < createdAt) {
+    return undefined;
+  }
+
+  return revealAt;
 }

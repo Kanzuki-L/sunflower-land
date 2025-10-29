@@ -14,10 +14,12 @@ const usernameFeatureFlag = (game: GameState) => {
       "adam",
       "tango",
       "elias",
+      "Aeon",
       "dcol",
       "birb",
       "Celinhotv",
       "LittleEins",
+      "Labochi",
       "Craig",
       "Spencer",
     ]
@@ -91,7 +93,7 @@ const FEATURE_FLAGS = {
   RONIN_AIRDROP: (game: GameState) => {
     if (Date.now() > RONIN_AIRDROP_ENDDATE.getTime()) return false;
 
-    return defaultFeatureFlag(game);
+    return betaTimeBasedFeatureFlag(new Date("2025-10-21T00:00:00Z"))(game);
   },
 
   // Permanent Feature Flags
@@ -105,6 +107,10 @@ const FEATURE_FLAGS = {
   LEDGER: testnetLocalStorageFeatureFlag("ledger"),
 
   EASTER: () => false,
+
+  HALLOWEEN: (game) =>
+    betaTimeBasedFeatureFlag(new Date("2025-10-28T00:00:00Z"))(game) &&
+    Date.now() < new Date("2025-11-05T00:00:00Z").getTime(),
 
   STREAM_STAGE_ACCESS: adminFeatureFlag,
 
@@ -130,7 +136,7 @@ const FEATURE_FLAGS = {
   NODE_FORGING: defaultFeatureFlag,
   DEPOSIT_SFL: () =>
     Date.now() < new Date("2025-10-28T00:00:00.000Z").getTime(),
-  RONIN_FLOWER: adminFeatureFlag,
+  RONIN_FLOWER: betaTimeBasedFeatureFlag(new Date("2025-10-21T00:00:00Z")),
   MEMORY_BETA: defaultFeatureFlag,
   PET_NFT_DEPOSIT: testnetFeatureFlag,
   PET_NFT_MARKETPLACE: testnetFeatureFlag,

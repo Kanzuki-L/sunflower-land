@@ -474,11 +474,11 @@ describe("purchase.claimed", () => {
               id: 1,
               requests: {
                 food: [],
+                fedAt: 0,
               },
               energy: 0,
               experience: 0,
               pettedAt: 0,
-              revealAt: 0,
             },
           },
         },
